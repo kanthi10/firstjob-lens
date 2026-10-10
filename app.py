@@ -65,6 +65,12 @@ def analyze_job(text):
 
     for pattern, title, advice in rules:
         match = re.search(pattern, text, re.IGNORECASE)
+        if match and title == "Employment bond":
+            before_match = text[:match.start()].lower()
+            recent_text = before_match[-40:]
+
+            if re.search(r"\b(no|not|without|never)\b", recent_text):
+                match = None
 
         if match:
             findings.append({
