@@ -53,6 +53,11 @@ def analyze_job(text):
             r"\b(?:penalty|pay a fee|pay back)\b",
             "Possible exit cost",
             "Ask when this cost applies and how it is calculated."
+        
+        (
+            r"\b(registration fee|application fee|upfront fee|joining fee|pay .* before joining|non-refundable)\b",
+            "Upfront payment",
+            "Ask why payment is required before joining and verify the employer independently."
         ),
         (
             r"\b\d+\s*(?:years?|months?)\b.{0,50}"
