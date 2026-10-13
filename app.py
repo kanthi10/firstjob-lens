@@ -73,21 +73,31 @@ def analyze_job(text):
     ]
 
     findings = []
-  
+
     for pattern, title, advice in rules:
         for match in re.finditer(pattern, text, re.IGNORECASE):
             if title == "Employment bond":
-                before_match = text[:match.start()].lower()
-                recent_text = before_match[-60:]
+                sentence_start = max(
+                    text.rfind(".", 0, match.start()),
+                    text.rfind("!", 0, match.start()),
+                    text.rfind("?", 0, match.start())
+                ) + 1
 
-                if re.search(r"\b(no|not|without|never)\b", recent_text):
+                preceding = text[sentence_start:match.start()].lower()
+
+                if re.search(r"\b(no|not|without|never)\b", preceding):
                     continue
 
             if title == "Possible exit cost":
-                before_match = text[:match.start()].lower()
-                recent_text = before_match[-80:]
+                sentence_start = max(
+                    text.rfind(".", 0, match.start()),
+                    text.rfind("!", 0, match.start()),
+                    text.rfind("?", 0, match.start())
+                ) + 1
 
-                if re.search(r"\b(no|not|without|never)\b", recent_text):
+                preceding = text[sentence_start:match.start()].lower()
+
+                if re.search(r"\b(no|not|without|never)\b", preceding):
                     continue
 
             findings.append({
@@ -97,7 +107,6 @@ def analyze_job(text):
             })
 
     return findings
-
 
 if st.button("Analyze Job Description", type="primary"):
     if not job_text.strip():
