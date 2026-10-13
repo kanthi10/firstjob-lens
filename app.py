@@ -32,6 +32,7 @@ job_text = st.text_area(
 
 def analyze_job(text):
     rules = [
+        
         (
             r"\bunpaid\b|\bwithout pay\b|\bno salary\b",
             "Unpaid work",
@@ -59,6 +60,16 @@ def analyze_job(text):
             "Experience requirement",
             "Check whether the experience requirement is mandatory."
         ),
+        (
+    r"\b(?:freshers|fresher)\b.{0,40}\b(?:not eligible|cannot apply|ineligible)\b",
+    "Freshers not eligible",
+    "Confirm whether freshers are excluded from this role."
+),
+(
+    r"\b(?:minimum of )?(?:two|three|four|five|\d+)\s+years?\s+(?:of )?experience\b",
+    "Experience requirement",
+    "Check whether the experience requirement is mandatory."
+),
     ]
 
     findings = []
